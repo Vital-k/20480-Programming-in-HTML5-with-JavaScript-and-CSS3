@@ -60,12 +60,34 @@ function displaySchedule() {
     }
 }
 
+let starCount = 0;
+
 function saveStar(sessionId, isStarred) {
     // TODO: Create an XMLHttpRequest that POSTs to "/schedule/star/{sessionId}"
     //       The request body must have the content type "application/x-www-form-urlencoded"
     //       e.g. "starred=true" or "starred=false"
     //       The response contains a JSON object "{ starCount: <number> }"
     //       If the star count is more than 50, warn the user about this being a busy session.
+    let request = new XMLHttpRequest();
+    request.open("POST", "/schedule/star/" + sessionId);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    request.onreadystatechange = (data) => {
+        if (request.status != 200) {
+            alert('dddd');
+        }
+
+        if (isStarred) {
+            starCount += 1;
+        }
+
+        if (starCount > 50) {
+            alert('This session is very popular! Be sure to arrive early to get a seat.');
+        }
+    };
+
+
+    request.send("starred=" + isStarred);
 }
 
 function handleListClick(event) {
